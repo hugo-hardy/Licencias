@@ -5,7 +5,13 @@
  */
 
 package licencias.GUIs;
+import Entidades.Titular;
+import Entidades.Contribuyente;
+import javax.swing.JOptionPane;
+import java.sql.Date;
 import licencias.Imagen;
+import javax.persistence.*;
+import jdk.nashorn.internal.parser.TokenType;
 /**
  *
  * @author HARDY
@@ -35,38 +41,50 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenu1 = new javax.swing.JMenu();
+        entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("licencias?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
+        titularQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM Titular t");
+        titularList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : titularQuery.getResultList();
+        titularQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM Titular t");
+        titularList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : titularQuery1.getResultList();
+        titularQuery2 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM Titular t");
+        titularList2 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : titularQuery2.getResultList();
+        contribuyenteQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM Contribuyente c");
+        contribuyenteList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : contribuyenteQuery.getResultList();
+        titularQuery3 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM Titular t");
+        titularList3 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : titularQuery3.getResultList();
         jLabel1 = new javax.swing.JLabel();
         jbOk = new javax.swing.JButton();
         jbCancelar = new javax.swing.JButton();
         jpImagen = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        jtbApellido = new javax.swing.JTextField();
+        jtbNroDoc = new javax.swing.JTextField();
         jcbTipo = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        jtbDireccion = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jcbTipo1 = new javax.swing.JComboBox();
-        jcbTipo2 = new javax.swing.JComboBox();
-        jLabel8 = new javax.swing.JLabel();
-        jcbTipo3 = new javax.swing.JComboBox();
+        jcbGrupoSang = new javax.swing.JComboBox();
+        jcbFactor = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
+        jcbClaseA = new javax.swing.JCheckBox();
+        jcbClaseB = new javax.swing.JCheckBox();
+        jcbClaseC = new javax.swing.JCheckBox();
+        jcbClaseE = new javax.swing.JCheckBox();
+        jcbClaseD = new javax.swing.JCheckBox();
+        jcbClaseF = new javax.swing.JCheckBox();
+        jcbClaseG = new javax.swing.JCheckBox();
         jLabel9 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        jtbImagen = new javax.swing.JTextField();
         jbCancelar1 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        jtbObs = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jtbNombre = new javax.swing.JTextField();
+        dtpNacimiento = new datechooser.beans.DateChooserCombo();
+        jcbDonante = new javax.swing.JCheckBox();
 
         jMenu1.setText("jMenu1");
 
@@ -76,6 +94,11 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
         jLabel1.setText("Tipo");
 
         jbOk.setText("Aceptar");
+        jbOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbOkActionPerformed(evt);
+            }
+        });
 
         jbCancelar.setText("Cancelar");
         jbCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -99,7 +122,13 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
 
         jLabel2.setText("Nro. Documento");
 
-        jLabel3.setText("Apellido y Nombre");
+        jLabel3.setText("Apellido");
+
+        jtbApellido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtbApellidoActionPerformed(evt);
+            }
+        });
 
         jcbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione", "DNI", "CI", "PASAPORTE", "LE" }));
 
@@ -111,36 +140,32 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
 
         jLabel7.setText("Factor");
 
-        jcbTipo1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione", "0", "A", "B", "AB" }));
+        jcbGrupoSang.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione", "0", "A", "B", "AB" }));
 
-        jcbTipo2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione", "RH +", "RH -" }));
-
-        jLabel8.setText("Donante de Organos");
-
-        jcbTipo3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione", "SI", "NO" }));
+        jcbFactor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione", "RH +", "RH -" }));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Tipos de Licencia")));
 
-        jCheckBox1.setText("Clase A");
-        jCheckBox1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jcbClaseA.setText("Clase A");
+        jcbClaseA.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jCheckBox2.setText("Clase B");
-        jCheckBox2.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jcbClaseB.setText("Clase B");
+        jcbClaseB.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jCheckBox3.setText("Clase C");
-        jCheckBox3.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jcbClaseC.setText("Clase C");
+        jcbClaseC.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jCheckBox4.setText("Clase E");
-        jCheckBox4.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jcbClaseE.setText("Clase E");
+        jcbClaseE.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jCheckBox5.setText("Clase D");
-        jCheckBox5.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jcbClaseD.setText("Clase D");
+        jcbClaseD.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jCheckBox6.setText("Clase F");
-        jCheckBox6.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jcbClaseF.setText("Clase F");
+        jcbClaseF.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jCheckBox7.setText("Clase G");
-        jCheckBox7.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jcbClaseG.setText("Clase G");
+        jcbClaseG.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -149,16 +174,16 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox3))
+                    .addComponent(jcbClaseB)
+                    .addComponent(jcbClaseA)
+                    .addComponent(jcbClaseC))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox4)
-                    .addComponent(jCheckBox5)
-                    .addComponent(jCheckBox6))
+                    .addComponent(jcbClaseE)
+                    .addComponent(jcbClaseD)
+                    .addComponent(jcbClaseF))
                 .addGap(41, 41, 41)
-                .addComponent(jCheckBox7)
+                .addComponent(jcbClaseG)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -167,19 +192,19 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jCheckBox5)
+                        .addComponent(jcbClaseD)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox4)
-                            .addComponent(jCheckBox7))
+                            .addComponent(jcbClaseE)
+                            .addComponent(jcbClaseG))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jCheckBox6)
-                            .addComponent(jCheckBox3)))
+                            .addComponent(jcbClaseF)
+                            .addComponent(jcbClaseC)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jCheckBox1)
+                        .addComponent(jcbClaseA)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox2)))
+                        .addComponent(jcbClaseB)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -193,6 +218,16 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
         });
 
         jLabel10.setText("Observación");
+
+        jLabel11.setText("Nombre");
+
+        jcbDonante.setText("Donante");
+        jcbDonante.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jcbDonante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbDonanteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -211,104 +246,119 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jtbImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jbCancelar1))
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jtbObs, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(133, 133, 133)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jbOk)
+                                .addGap(81, 81, 81)
+                                .addComponent(jbCancelar))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel7)
-                                    .addComponent(jLabel6)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jpImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jcbGrupoSang, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jcbFactor, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(134, 134, 134))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jpImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtbDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dtpNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(jLabel3)
                                             .addComponent(jLabel2)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel5))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jcbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jcbTipo1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jcbTipo2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jcbTipo3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(134, 134, 134))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jbOk)
-                                .addGap(81, 81, 81)
-                                .addComponent(jbCancelar)))))
+                                            .addComponent(jLabel1))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jtbNroDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jtbApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jcbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel11)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jtbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(168, 168, 168)
+                .addComponent(jcbDonante)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jpImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(jcbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtbNroDoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jtbApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jtbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)))
+                    .addComponent(jpImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(dtpNacimiento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcbTipo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtbDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jcbGrupoSang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jcbTipo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcbFactor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jcbTipo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jcbDonante)
+                .addGap(1, 1, 1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtbImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel9))
                     .addComponent(jbCancelar1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtbObs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbOk)
                     .addComponent(jbCancelar))
-                .addContainerGap())
+                .addGap(23, 23, 23))
         );
 
         getAccessibleContext().setAccessibleDescription("");
@@ -323,6 +373,71 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
     private void jbCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelar1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbCancelar1ActionPerformed
+    
+    private boolean findContribuyente() {
+        //Retorna verdadero si encuentra un contribuyente
+        Query q = entityManager.createQuery("select c from Contribuyente c where c.numeroDocumento = ?1");
+        q.setParameter(1, jtbNroDoc.getText());
+        
+        return q.getFirstResult()!=0;
+           
+  }
+    private void jbOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbOkActionPerformed
+      //Verificar que este en lista de contribuyentes
+       try {
+        //entityManager.close();   
+        if(! findContribuyente())
+        {
+          JOptionPane.showMessageDialog(null, "El Titular no es Contribuyente");
+        }
+        else
+        {
+      //Verificar y guardar
+              
+      // Crea un nuevo titular
+      Titular titular = new Titular();
+      titular.setActivo(true);
+      titular.setClaseRequerida("");
+      titular.setDireccion(jtbDireccion.getText());
+      titular.setEsDonante(jcbDonante.isSelected());
+      titular.setFactorRh(jcbFactor.getSelectedItem().toString());
+      titular.setFechaNacimiento(dtpNacimiento.getCurrent().getTime());
+      titular.setGrupoSanguineo(jcbGrupoSang.getSelectedItem().toString());
+      titular.setNroDocumento(jtbNroDoc.getText());
+      titular.setObservacion(jtbObs.getText());
+      titular.setTipoDocumento(jcbTipo.getSelectedItem().toString());
+      titular.setNombre(jtbNombre.getText());
+      titular.setApellido(jtbApellido.getText());
+      titular.setRutaImagen(jtbImagen.getText());
+      titular.setClaseA(jcbClaseA.isSelected());
+      titular.setClaseB(jcbClaseB.isSelected());
+      titular.setClaseC(jcbClaseC.isSelected());
+      titular.setClaseD(jcbClaseD.isSelected());
+      titular.setClaseE(jcbClaseE.isSelected());
+      titular.setClaseF(jcbClaseF.isSelected());
+      titular.setClaseG(jcbClaseG.isSelected());
+      EntityTransaction etx = entityManager.getTransaction();
+      etx.begin();
+        entityManager.persist(titular);
+        entityManager.close();
+      etx.commit();
+      
+          JOptionPane.showMessageDialog(null, "Titular guardado correctamente");
+          dispose();
+        }
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
+        
+    }//GEN-LAST:event_jbOkActionPerformed
+
+    private void jtbApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbApellidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtbApellidoActionPerformed
+
+    private void jcbDonanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbDonanteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbDonanteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -361,38 +476,52 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
+    private java.util.List<Entidades.Contribuyente> contribuyenteList;
+    private javax.persistence.Query contribuyenteQuery;
+    private datechooser.beans.DateChooserCombo dtpNacimiento;
+    private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JButton jbCancelar;
     private javax.swing.JButton jbCancelar1;
     private javax.swing.JButton jbOk;
+    private javax.swing.JCheckBox jcbClaseA;
+    private javax.swing.JCheckBox jcbClaseB;
+    private javax.swing.JCheckBox jcbClaseC;
+    private javax.swing.JCheckBox jcbClaseD;
+    private javax.swing.JCheckBox jcbClaseE;
+    private javax.swing.JCheckBox jcbClaseF;
+    private javax.swing.JCheckBox jcbClaseG;
+    private javax.swing.JCheckBox jcbDonante;
+    private javax.swing.JComboBox jcbFactor;
+    private javax.swing.JComboBox jcbGrupoSang;
     private javax.swing.JComboBox jcbTipo;
-    private javax.swing.JComboBox jcbTipo1;
-    private javax.swing.JComboBox jcbTipo2;
-    private javax.swing.JComboBox jcbTipo3;
     private javax.swing.JPanel jpImagen;
+    private javax.swing.JTextField jtbApellido;
+    private javax.swing.JTextField jtbDireccion;
+    private javax.swing.JTextField jtbImagen;
+    private javax.swing.JTextField jtbNombre;
+    private javax.swing.JTextField jtbNroDoc;
+    private javax.swing.JTextField jtbObs;
+    private java.util.List<Entidades.Titular> titularList;
+    private java.util.List<Entidades.Titular> titularList1;
+    private java.util.List<Entidades.Titular> titularList2;
+    private java.util.List<Entidades.Titular> titularList3;
+    private javax.persistence.Query titularQuery;
+    private javax.persistence.Query titularQuery1;
+    private javax.persistence.Query titularQuery2;
+    private javax.persistence.Query titularQuery3;
     // End of variables declaration//GEN-END:variables
+   // DB_Conexion cc= new DB_Conexion();
+   // Connection cn= cc.conexion();
 }
