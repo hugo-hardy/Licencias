@@ -7,12 +7,15 @@ package licencias.GUIs;
 import licencias.Imagen;
 import Entidades.Titular;
 import Entidades.Licencia;
+import Entidades.TipoLicencia;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.swing.JOptionPane;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
+import java.text.SimpleDateFormat;
 /**
  *
  * @author HARDY
@@ -42,6 +45,8 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         licenciaList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaQuery.getResultList();
         titularQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM Titular t");
         titularList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : titularQuery.getResultList();
+        licenciaQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM Licencia l");
+        licenciaList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaQuery1.getResultList();
         jpImagen = new javax.swing.JPanel();
         jbOk = new javax.swing.JButton();
         jbCancelar = new javax.swing.JButton();
@@ -52,7 +57,6 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jtbApellido = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jftFechaNacimiento = new javax.swing.JFormattedTextField();
         jLabel5 = new javax.swing.JLabel();
         jtbDireccion = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -72,6 +76,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jtbNombre = new javax.swing.JTextField();
         jchbDonante = new javax.swing.JCheckBox();
+        jftNacimiento = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("EMITIR LICENCIA");
@@ -105,7 +110,11 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
 
         jcbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DNI", "CI", "PASAPORTE", "LE" }));
 
-        jtbNroDoc.setText("Nro Documento");
+        jtbNroDoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtbNroDocActionPerformed(evt);
+            }
+        });
 
         jbBuscar.setText("Buscar");
         jbBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -234,6 +243,8 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         jchbDonante.setText("Es donante");
         jchbDonante.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
+        jftNacimiento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -289,7 +300,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
                         .addGap(84, 84, 84)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jftFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jftNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(78, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -307,10 +318,10 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jftFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(jftNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -325,7 +336,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
                     .addComponent(jcbFactor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jchbDonante)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -369,11 +380,16 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         else
         {
         id_titular = t.getIdTitular();
-        
+                       
         jtbApellido.setText(t.getApellido());
         jtbNombre.setText(t.getNombre());
         jtbDireccion.setText(t.getDireccion());
-        //jftFechaNacimiento.setText(t.getFechaNacimiento().toString());
+        if(t.getFechaNacimiento()!=null)
+        {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dateString = formatter.format(t.getFechaNacimiento());
+        jftNacimiento.setText(dateString);
+        }
         jcbFactor.setSelectedItem(t.getFactorRh());
         jcbGrupo.setSelectedItem(t.getGrupoSanguineo());
         jchbDonante.setSelected(t.getEsDonante());
@@ -389,6 +405,27 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jbBuscarActionPerformed
 
+    
+    private int edad(String fecha_nac) {     //fecha_nac debe tener el formato dd/MM/yyyy
+   
+    Date fechaActual = new Date();
+    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+    String hoy = formato.format(fechaActual);
+    String[] dat1 = fecha_nac.split("/");
+    String[] dat2 = hoy.split("/");
+    int anos = Integer.parseInt(dat2[2]) - Integer.parseInt(dat1[2]);
+    int mes = Integer.parseInt(dat2[1]) - Integer.parseInt(dat1[1]);
+    if (mes < 0) {
+      anos = anos - 1;
+    } else if (mes == 0) {
+      int dia = Integer.parseInt(dat2[0]) - Integer.parseInt(dat1[0]);
+      if (dia > 0) {
+        anos = anos - 1;
+      }
+    }
+    return anos;
+  }
+    
     private void jcbGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbGrupoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jcbGrupoActionPerformed
@@ -402,11 +439,13 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
       // Crea un nueva licencia
       Licencia lic = new Licencia();
       lic.setFechaAlta(new Date());
+      lic.setVigencia(null);
       lic.setFechaBaja(null);
       lic.setIdTitular(id_titular);
       lic.setObservacion(jtbObs.getText());
       lic.setValor(null);
       lic.setClase(clase);      
+      lic.setImpresa(false);
       
       EntityTransaction etx = entityManager.getTransaction();
       etx.begin();
@@ -421,10 +460,14 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
     
     private void jbOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbOkActionPerformed
         // Emitir Licencia despues de validar
-        int countEmitidas = 0;
+       int countEmitidas = 0;
+       int tituEdad = 0;
+       tituEdad = edad(jftNacimiento.getText());
+      
        if(jcbA.isSelected())
        {
            //Validar clase A
+           if(TipoLicencia.cumpleEdadMinima("Clase A", tituEdad))
            emitirLicenciaConClase("Clase A");
            countEmitidas++;
        }
@@ -472,6 +515,10 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
        entityManager.close();
         
     }//GEN-LAST:event_jbOkActionPerformed
+
+    private void jtbNroDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbNroDocActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtbNroDocActionPerformed
 
     /**
      * @param args the command line arguments
@@ -533,7 +580,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
     private javax.swing.JComboBox jcbGrupo;
     private javax.swing.JComboBox jcbTipo;
     private javax.swing.JCheckBox jchbDonante;
-    private javax.swing.JFormattedTextField jftFechaNacimiento;
+    private javax.swing.JFormattedTextField jftNacimiento;
     private javax.swing.JPanel jpImagen;
     private javax.swing.JTextField jtbApellido;
     private javax.swing.JTextField jtbDireccion;
@@ -541,7 +588,9 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
     private javax.swing.JTextField jtbNroDoc;
     private javax.swing.JTextField jtbObs;
     private java.util.List<Entidades.Licencia> licenciaList;
+    private java.util.List<Entidades.Licencia> licenciaList1;
     private javax.persistence.Query licenciaQuery;
+    private javax.persistence.Query licenciaQuery1;
     private java.util.List<Entidades.Titular> titularList;
     private javax.persistence.Query titularQuery;
     // End of variables declaration//GEN-END:variables

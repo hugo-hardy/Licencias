@@ -4,13 +4,32 @@
  * and open the template in the editor.
  */
 package licencias.GUIs;
+import Entidades.Licencia;
+import Entidades.LicenciaVencida;
+import Entidades.Titular;
+import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
+import static javax.print.attribute.Size2DSyntax.MM;
+import javax.sql.rowset.CachedRowSet;
+import javax.swing.JScrollPane;
+import javax.swing.RowFilter;
+import javax.swing.RowFilter.ComparisonType;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import licencias.Imagen;
 /**
  *
  * @author HARDY
  */
 public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
-
+    private TableRowSorter trsfiltro;
     /**
      * Creates new form Fm_Licencias_Expiradas
      */
@@ -33,6 +52,8 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("licencias?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
         licenciaVencidaQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM LicenciaVencida l");
         licenciaVencidaList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaVencidaQuery.getResultList();
+        licenciaVencidaQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM LicenciaVencida l");
+        licenciaVencidaList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaVencidaQuery1.getResultList();
         jpImagen = new javax.swing.JPanel();
         jbCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -40,11 +61,12 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        jtbDoc = new javax.swing.JTextField();
+        jftDesde = new javax.swing.JFormattedTextField();
         jbCancelar1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        jftHasta = new javax.swing.JFormattedTextField();
+        jbCancelar3 = new javax.swing.JButton();
         jbCancelar2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -58,7 +80,7 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
         );
         jpImagenLayout.setVerticalGroup(
             jpImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 94, Short.MAX_VALUE)
         );
 
         jbCancelar.setText("Volver");
@@ -68,9 +90,27 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
             }
         });
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, licenciaVencidaQuery, org.jdesktop.beansbinding.ObjectProperty.create(), jTableLic, org.jdesktop.beansbinding.BeanProperty.create("elements"));
-        bindingGroup.addBinding(binding);
-        binding.bind();
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, licenciaVencidaList1, jTableLic);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${apellidoNombre}"));
+        columnBinding.setColumnName("Apellido Nombre");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nroDocumento}"));
+        columnBinding.setColumnName("Nro Documento");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${clase}"));
+        columnBinding.setColumnName("Clase");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${fechaAlta}"));
+        columnBinding.setColumnName("Fecha Alta");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${vigencia}"));
+        columnBinding.setColumnName("Vigencia");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${observacion}"));
+        columnBinding.setColumnName("Observacion");
+        columnBinding.setColumnClass(String.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
         jScrollPane1.setViewportView(jTableLic);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtros"));
@@ -78,6 +118,8 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
         jLabel1.setText("Nro. Documento");
 
         jLabel2.setText("Fecha Desde");
+
+        jftDesde.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd-MM-yyyy"))));
 
         jbCancelar1.setText("Buscar");
         jbCancelar1.addActionListener(new java.awt.event.ActionListener() {
@@ -88,6 +130,20 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
 
         jLabel3.setText("Fecha Hasta");
 
+        jftHasta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd-MM-yyyy"))));
+        jftHasta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jftHastaActionPerformed(evt);
+            }
+        });
+
+        jbCancelar3.setText("Limpriar");
+        jbCancelar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbCancelar3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -96,38 +152,41 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtbDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(jbCancelar1)
-                .addContainerGap(67, Short.MAX_VALUE))
+                        .addComponent(jftDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbCancelar3)
+                            .addComponent(jftHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbCancelar1, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                .addGap(22, 22, 22))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jbCancelar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                            .addComponent(jtbDoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jftDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                            .addComponent(jftHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jbCancelar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(jbCancelar3))
         );
 
         jbCancelar2.setText("Actualizar expiradas");
@@ -160,16 +219,16 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jpImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbCancelar2)
                     .addComponent(jbCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -181,15 +240,142 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jbCancelarActionPerformed
 
+    
+    private void cargarTabla(){
+    DefaultTableModel dtmLic = new DefaultTableModel();
+         
+    //llenar el modelo
+    
+    
+    jTableLic.setModel(dtmLic);
+           
+    }
+    
     private void jbCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelar1ActionPerformed
         // TODO add your handling code here:
+        /*List<Entidades.LicenciaVencida> lic;
         
+        String query = "select lv from LicenciaVencida LV";
+        if(jtbDoc.getText()!=""){
+        query = query+" WHERE lv.nroDocumento=?1";
+        }*/
+        /*if(jftDesde.getText()!=""){
+        query = query+" and lv.fechaAlta BETWEEN ?2 AND ?3";
+        }*/
+              
+        //Query q = entityManager.createQuery("select lv from LicenciaVencida LV where lv.fechaAlta BETWEEN ?1 and ?2");
+        /*Query q = entityManager.createQuery(query);
+        
+        q.setParameter(1, jtbDoc.getText());
+        //q.setParameter(2, jftDesde.getText());
+        //q.setParameter(2, jftHasta.getText());
+               
+        lic = q.getResultList();
+               
+        licenciaVencidaList1 = lic;
+        licenciaVencidaList = lic;
+        jTableLic.repaint();
+        jTableLic.updateUI();*/
+        
+        repaint();
+        trsfiltro = new TableRowSorter(jTableLic.getModel());
+        
+        filtro();
+
+        jTableLic.setRowSorter(trsfiltro);
     }//GEN-LAST:event_jbCancelar1ActionPerformed
 
+    private void deleteLicencia(int id_licencia){
+    Licencia lic = entityManager.find(Licencia.class, id_licencia);
+        
+        EntityTransaction etx = entityManager.getTransaction();
+        etx.begin();
+        entityManager.remove(lic);
+        entityManager.close();
+      etx.commit();
+    }
+    
+    private void insertarLicenciasExp(int id_licencia){
+    Licencia lic = entityManager.find(Licencia.class, id_licencia);
+    Titular tit = entityManager.find(Titular.class, lic.getIdTitular());
+    
+    LicenciaVencida licVen = new LicenciaVencida();
+        licVen.setClase(lic.getClase());
+        licVen.setFechaAlta(lic.getFechaAlta());
+        licVen.setFechaBaja(lic.getFechaBaja());
+        licVen.setVigencia(lic.getVigencia());
+        licVen.setObservacion(lic.getObservacion());
+        licVen.setIdTitular(lic.getIdTitular());
+        licVen.setValor(lic.getValor());
+        licVen.setApellidoNombre(tit.getApellido()+" "+tit.getNombre());
+        licVen.setNroDocumento(tit.getNroDocumento());
+        
+        EntityTransaction etx = entityManager.getTransaction();
+        etx.begin();
+        entityManager.persist(licVen);
+        entityManager.close();
+      etx.commit();
+    }
+    
+    private List<Licencia> getLicencias(){
+    Query qt = entityManager.createQuery("select l from Licencia L where l.vigencia<now()");
+    return qt.getResultList();
+    }
+    
     private void jbCancelar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelar2ActionPerformed
         //Actualizar licencias expiradas
+        List<Licencia> listLic = getLicencias();
+        for (int lic = 0; lic <= listLic.size()-1;lic++)
+                {                    
+                    insertarLicenciasExp(listLic.get(lic).getIdLicencia());
+                    deleteLicencia(listLic.get(lic).getIdLicencia());
+                }
     }//GEN-LAST:event_jbCancelar2ActionPerformed
 
+    private void jftHastaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jftHastaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jftHastaActionPerformed
+
+    private void jbCancelar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelar3ActionPerformed
+       jftDesde.setText("");
+       jftHasta.setText("");
+       jftDesde.setValue(null);
+       jftHasta.setValue(null);
+    }//GEN-LAST:event_jbCancelar3ActionPerformed
+      
+   public void filtro() {
+      
+   List filters = new ArrayList<RowFilter<Object,Object>>(); 
+   String strFechaDesde = jftDesde.getText();
+   String strFechaHasta = jftHasta.getText();
+   
+   if(!"".equals(strFechaDesde)){
+   SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd-MM-yyyy");
+      
+   Date fecha_vig_desde = new Date();
+   Date fecha_vig_hasta = new Date();
+   
+   try {
+   fecha_vig_desde = formatoDelTexto.parse(strFechaDesde);
+   fecha_vig_hasta = formatoDelTexto.parse(strFechaHasta);
+      
+} catch (ParseException ex) {
+    ex.printStackTrace();
+}
+      
+   filters.add(RowFilter.dateFilter(ComparisonType.AFTER,fecha_vig_desde,4));
+   filters.add(RowFilter.dateFilter(ComparisonType.BEFORE,fecha_vig_hasta,4));
+   filters.add(RowFilter.dateFilter(ComparisonType.EQUAL,fecha_vig_desde,4));
+   filters.add(RowFilter.dateFilter(ComparisonType.EQUAL,fecha_vig_hasta,4));
+   
+   }   
+   if(jtbDoc.getText() != ""){
+   filters.add(RowFilter.regexFilter(jtbDoc.getText(), 1));
+   }
+   if(filters.size()>0){
+   trsfiltro.setRowFilter(RowFilter.andFilter(filters));
+   } 
+   }
     /**
      * @param args the command line arguments
      */
@@ -227,21 +413,24 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.persistence.EntityManager entityManager;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableLic;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton jbCancelar;
     private javax.swing.JButton jbCancelar1;
     private javax.swing.JButton jbCancelar2;
+    private javax.swing.JButton jbCancelar3;
+    private javax.swing.JFormattedTextField jftDesde;
+    private javax.swing.JFormattedTextField jftHasta;
     private javax.swing.JPanel jpImagen;
-    private java.util.List<licencias.GUIs.LicenciaVencida> licenciaVencidaList;
+    private javax.swing.JTextField jtbDoc;
+    private java.util.List<Entidades.LicenciaVencida> licenciaVencidaList;
+    private java.util.List<Entidades.LicenciaVencida> licenciaVencidaList1;
     private javax.persistence.Query licenciaVencidaQuery;
+    private javax.persistence.Query licenciaVencidaQuery1;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,6 +5,18 @@
  */
 package licencias.GUIs;
 import licencias.Imagen;
+import Entidades.Licencia;
+import Entidades.Titular;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.Query;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import jdk.nashorn.internal.objects.NativeArray;
 /**
  *
  * @author HARDY
@@ -29,9 +41,14 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("licencias?zeroDateTimeBehavior=convertToNullPU").createEntityManager();
+        licenciaQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM Licencia l");
+        licenciaList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaQuery.getResultList();
+        licenciaQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM Licencia l");
+        licenciaList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaQuery1.getResultList();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jtbDoc = new javax.swing.JTextField();
         jbCancelar1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -60,7 +77,7 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtbDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jbCancelar1)
                 .addContainerGap(57, Short.MAX_VALUE))
@@ -71,20 +88,17 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtbDoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbCancelar1))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Apellido y Nombre", "Nro. Doc", "Tipo Licencia", "Fecha Expiración"
+
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -133,21 +147,92 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
                     .addComponent(jpImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbCancelar)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
-        this.dispose();
+        String dato=String.valueOf(jTable1.getModel().getValueAt(jTable1.getSelectedRow(),0));
+        int id_lic = Integer.parseInt(dato);
+        
+        if(id_lic != -1){
+        Fm_Imprimir fm_imprimir = new Fm_Imprimir(id_lic);
+        fm_imprimir.setLocationRelativeTo(null);
+        fm_imprimir.setVisible(true);
+        
+            }    
+        else{
+            JOptionPane.showMessageDialog(null, "Seleccione una Licencia para imprimir");
+            }
     }//GEN-LAST:event_jbCancelarActionPerformed
 
+    private List<Titular> getTitulares(){
+    Query qt = entityManager.createQuery("select t from Titular T");
+    return qt.getResultList();
+                
+    }
+    
+    private List<Licencia> getLicencias(){
+    Query qt = entityManager.createQuery("select l from Licencia L where l.impresa=false");
+    return qt.getResultList();
+                
+    }
+    
+    private List<Licencia> getLicenciasDNI(){
+    //Query qt = entityManager.createQuery("select l from Licencia as L inner join Titular AS t on ON  where l.impresa=false ");
+    Query qt = entityManager.createQuery("SELECT l FROM Licencia l, Titular t WHERE l.idTitular = t.idTitular and l.impresa=0 and t.nroDocumento=?1");
+          qt.setParameter(1, jtbDoc.getText());
+    return qt.getResultList();
+                
+    }
+    
     private void jbCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelar1ActionPerformed
-        // TODO add your handling code here:
+                String[] columnNames = {"ID","Clase","Apellido","Nombre","Documento","Fecha Alta","Vencimiento"};
+                List<Licencia> listLic;
+                
+                if("".equals(jtbDoc.getText())){
+                listLic = getLicencias();
+                }
+                else{
+                listLic = getLicenciasDNI();
+                }
+                
+                DefaultTableModel dtmLic = new DefaultTableModel(null, columnNames);
+                SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd-MM-yyyy");
+                  
+                for (int row = 0; row <= listLic.size()-1;row++)
+                {                    
+                    Titular t = entityManager.find(Titular.class,listLic.get(row).getIdTitular());
+                    String[] fila = {listLic.get(row).getIdLicencia().toString(),
+                                     listLic.get(row).getClase(),
+                                     t.getApellido(),
+                                     t.getNombre(),
+                                     t.getNroDocumento(),
+                                     formatoDelTexto.format(listLic.get(row).getFechaAlta()),
+                                     formatoDelTexto.format(listLic.get(row).getVigencia()),
+                                                                       
+                    }; 
+                            
+                        dtmLic.addRow(fila);
+                }
+                 jTable1.setModel(dtmLic);           
+                                
+                if("".equals(jtbDoc.getText())){
+                TableRowSorter trsfiltro = new TableRowSorter(jTable1.getModel());
+                List filters = new ArrayList<RowFilter<Object,Object>>(); 
+   
+                filters.add(RowFilter.regexFilter(jtbDoc.getText(), 4));
+                trsfiltro.setRowFilter(RowFilter.andFilter(filters));
+   
+                jTable1.setRowSorter(trsfiltro);
+                } 
+                
+                
     }//GEN-LAST:event_jbCancelar1ActionPerformed
 
     /**
@@ -186,13 +271,18 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.persistence.EntityManager entityManager;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton jbCancelar;
     private javax.swing.JButton jbCancelar1;
     private javax.swing.JPanel jpImagen;
+    private javax.swing.JTextField jtbDoc;
+    private java.util.List<Entidades.Licencia> licenciaList;
+    private java.util.List<Entidades.Licencia> licenciaList1;
+    private javax.persistence.Query licenciaQuery;
+    private javax.persistence.Query licenciaQuery1;
     // End of variables declaration//GEN-END:variables
 }

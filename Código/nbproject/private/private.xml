@@ -3,11 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/HARDY/Documents/NetBeansProjects/Licencias/src/licencias/GUIs/Fm_Imprimir.java</file>
             <file>file:/C:/Users/HARDY/Documents/NetBeansProjects/Licencias/src/Entidades/TipoLicencia.java</file>
             <file>file:/C:/Users/HARDY/Documents/NetBeansProjects/Licencias/src/licencias/GUIs/Fm_Nuevo_Titular.java</file>
             <file>file:/C:/Users/HARDY/Documents/NetBeansProjects/Licencias/src/licencias/GUIs/Fm_Licencias_Expiradas.java</file>
+            <file>file:/C:/Users/HARDY/Documents/NetBeansProjects/Licencias/src/Entidades/Contribuyente.java</file>
             <file>file:/C:/Users/HARDY/Documents/NetBeansProjects/Licencias/src/licencias/GUIs/Fm_Emitir_Licencia.java</file>
-            <file>file:/C:/Users/HARDY/Documents/NetBeansProjects/Licencias/src/Entidades/Licencia.java</file>
+            <file>file:/C:/Users/HARDY/Documents/NetBeansProjects/Licencias/src/licencias/Validacion.java</file>
         </group>
     </open-files>
 </project-private>
