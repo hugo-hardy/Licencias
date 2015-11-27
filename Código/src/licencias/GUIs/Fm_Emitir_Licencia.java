@@ -436,6 +436,8 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
 
     private void emitirLicenciaConClase(String clase) {                                         
          try {
+             
+      //int vigencia = TipoLicencia.
       // Crea un nueva licencia
       Licencia lic = new Licencia();
       lic.setFechaAlta(new Date());
@@ -467,45 +469,58 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
        if(jcbA.isSelected())
        {
            //Validar clase A
-           if(TipoLicencia.cumpleEdadMinima("Clase A", tituEdad))
+           if(TipoLicencia.cumpleEdadMinima("Clase A", tituEdad)){
            emitirLicenciaConClase("Clase A");
            countEmitidas++;
+           }
        }
        if(jcbB.isSelected())
        {
            //Validar clase B
+           if(TipoLicencia.cumpleEdadMinima("Clase B", tituEdad)){
            emitirLicenciaConClase("Clase B");
            countEmitidas++;
+           }
        }
        if(jcbC.isSelected())
        {
            //Validar clase C
+           if(TipoLicencia.cumpleEdadMinima("Clase C", tituEdad)){
            emitirLicenciaConClase("Clase C");
            countEmitidas++;
+           }
        }
        if(jcbD.isSelected())
        {
            //Validar clase D
+           if(TipoLicencia.cumpleEdadMinima("Clase D", tituEdad)){
            emitirLicenciaConClase("Clase D");
            countEmitidas++;
+           }
        }
        if(jcbE.isSelected())
        {
            //Validar clase E
+           if(TipoLicencia.cumpleEdadMinima("Clase E", tituEdad)){
            emitirLicenciaConClase("Clase E");
            countEmitidas++;
+           }
        }
        if(jcbF.isSelected())
        {
            //Validar clase F
+           if(TipoLicencia.cumpleEdadMinima("Clase F", tituEdad)){
            emitirLicenciaConClase("Clase F");
            countEmitidas++;
+           }
        }
        if(jcbG.isSelected())
        {
            //Validar clase G
+           if(TipoLicencia.cumpleEdadMinima("Clase G", tituEdad)){
            emitirLicenciaConClase("Clase G");
            countEmitidas++;
+           }
        }
        if(countEmitidas > 0)
        {
