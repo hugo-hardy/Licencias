@@ -7,7 +7,7 @@
     <class>Entidades.Contribuyente</class>
     <class>Entidades.LicenciaVencida</class>
     <class>Entidades.ImprimirLicencia</class>
-    <class>licencias.GUIs.Impresion</class>
+    <class>Entidades.Impresion</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/licencias?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
