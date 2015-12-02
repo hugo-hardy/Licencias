@@ -5,14 +5,13 @@
  */
 package Entidades;
 
+import java.util.Date;
+import java.util.List;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
-/**
- *
- * @author HARDY
- */
 public class TipoLicencia {
     
+    //Valida que el titular cumpla con la edad minima requerida
     public static boolean cumpleEdadMinima(String tipoLicencia, int edad) {
         boolean cumple = false;
         switch(tipoLicencia){
@@ -84,7 +83,8 @@ public class TipoLicencia {
         return cumple;
     }
     
-    public Integer calcularVigencia(int edad, boolean primeraVez) {
+    //Calcula la vigencia de la licencia con la edad y si es la primera vez
+    public static Integer calcularVigencia(int edad, boolean primeraVez) {
         Integer vigencia = 0;
         
         if(edad >= 17 && edad<=21)
@@ -116,8 +116,9 @@ public class TipoLicencia {
         } 
         return vigencia;
     }
-    
-    public static float calcularCosto(String tipoLicencia, int vigencia) {
+        
+    //Calcula el costo de la licencia teniendo en cuenta la vigencia
+    public static double calcularCosto(String tipoLicencia, int vigencia) {
         float monto = 0;
         switch(tipoLicencia){
             case "Clase A": 
@@ -201,4 +202,6 @@ public class TipoLicencia {
         }    
         return monto;
     }
+   
+  
 }

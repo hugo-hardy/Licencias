@@ -62,8 +62,9 @@ public class LicenciaVencida implements Serializable {
     private Date fechaBaja;
     @Column(name = "observacion")
     private String observacion;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valor")
-    private Short valor;
+    private Double valor;
     @Column(name = "id_titular")
     private Integer idTitular;
     @Column(name = "apellido_Nombre")
@@ -138,12 +139,12 @@ public class LicenciaVencida implements Serializable {
         changeSupport.firePropertyChange("observacion", oldObservacion, observacion);
     }
 
-    public Short getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(Short valor) {
-        Short oldValor = this.valor;
+    public void setValor(Double valor) {
+        Double oldValor = this.valor;
         this.valor = valor;
         changeSupport.firePropertyChange("valor", oldValor, valor);
     }
