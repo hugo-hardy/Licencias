@@ -43,6 +43,42 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Entidades.LicenciaVencida&gt;"/>
       </AuxValues>
     </Component>
+    <Component class="javax.persistence.Query" name="licenciaVencidaQuery2">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT l FROM LicenciaVencida l"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="entityManager"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="java.util.List" name="licenciaVencidaList2">
+      <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="licenciaVencidaQuery2"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Entidades.LicenciaVencida&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.persistence.Query" name="licenciaVencidaQuery3">
+      <Properties>
+        <Property name="query" type="java.lang.String" value="SELECT l FROM LicenciaVencida l"/>
+        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
+          <ComponentRef name="entityManager"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="java.util.List" name="licenciaVencidaList3">
+      <Properties>
+        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
+          <ComponentRef name="licenciaVencidaQuery3"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Entidades.LicenciaVencida&gt;"/>
+      </AuxValues>
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
@@ -172,6 +208,11 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
               </TableColumnModel>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -179,13 +220,13 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="licenciaVencidaList1" target="jTableLic" targetPath="elements" updateStrategy="0" immediately="true">
-              <Subbinding sourcePath="${apellidoNombre}">
-                <BindingParameter name="NAME" value="Apellido Nombre"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-              </Subbinding>
+            <BindingProperty name="elements" source="licenciaVencidaList3" target="jTableLic" targetPath="elements" updateStrategy="0" immediately="true">
               <Subbinding sourcePath="${nroDocumento}">
                 <BindingParameter name="NAME" value="Nro Documento"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${apellidoNombre}">
+                <BindingParameter name="NAME" value="Apellido Nombre"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${clase}">
@@ -203,6 +244,10 @@
               <Subbinding sourcePath="${observacion}">
                 <BindingParameter name="NAME" value="Observacion"/>
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
+              </Subbinding>
+              <Subbinding sourcePath="${valor}">
+                <BindingParameter name="NAME" value="Valor"/>
+                <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Double.class"/>
               </Subbinding>
             </BindingProperty>
           </BindingProperties>

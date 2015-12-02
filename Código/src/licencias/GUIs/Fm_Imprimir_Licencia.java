@@ -4,9 +4,12 @@
  * and open the template in the editor.
  */
 package licencias.GUIs;
+import Entidades.ImprimirLicencia;
 import licencias.Imagen;
 import Entidades.Licencia;
 import Entidades.Titular;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,9 +50,9 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
         licenciaQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM Licencia l");
         licenciaList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaQuery1.getResultList();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jtbDoc = new javax.swing.JTextField();
-        jbCancelar1 = new javax.swing.JButton();
+        jbBuscar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jbCancelar = new javax.swing.JButton();
@@ -60,36 +63,36 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtros"));
 
-        jLabel1.setText("Nro. Documento");
-
-        jbCancelar1.setText("Buscar");
-        jbCancelar1.addActionListener(new java.awt.event.ActionListener() {
+        jbBuscar.setText("Buscar");
+        jbBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbCancelar1ActionPerformed(evt);
+                jbBuscarActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("Nro. Documento");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(26, 26, 26)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtbDoc, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jbCancelar1)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbBuscar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
                     .addComponent(jtbDoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbCancelar1))
+                    .addComponent(jbBuscar)
+                    .addComponent(jLabel1))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
@@ -101,6 +104,7 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
 
             }
         ));
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jTable1);
 
         jbCancelar.setText("Imprimir");
@@ -127,12 +131,12 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jpImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(0, 20, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -163,9 +167,11 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
         if(id_lic != -1){
         Fm_Imprimir fm_imprimir = new Fm_Imprimir(id_lic);
         fm_imprimir.setLocationRelativeTo(null);
-        fm_imprimir.setVisible(true);
+        //fm_imprimir.setVisible(true);
+        fm_imprimir.show();
+        realizarBusqueda();
         
-            }    
+        }    
         else{
             JOptionPane.showMessageDialog(null, "Seleccione una Licencia para imprimir");
             }
@@ -173,26 +179,17 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
 
     private List<Titular> getTitulares(){
     Query qt = entityManager.createQuery("select t from Titular T");
-    return qt.getResultList();
-                
+    return qt.getResultList();                
     }
     
-    private List<Licencia> getLicencias(){
-    Query qt = entityManager.createQuery("select l from Licencia L where l.impresa=false");
-    return qt.getResultList();
-                
+     public void componentClose(ComponentEvent e) {
+       this.realizarBusqueda();
+
     }
+       
     
-    private List<Licencia> getLicenciasDNI(){
-    //Query qt = entityManager.createQuery("select l from Licencia as L inner join Titular AS t on ON  where l.impresa=false ");
-    Query qt = entityManager.createQuery("SELECT l FROM Licencia l, Titular t WHERE l.idTitular = t.idTitular and l.impresa=0 and t.nroDocumento=?1");
-          qt.setParameter(1, jtbDoc.getText());
-    return qt.getResultList();
-                
-    }
-    
-    private void jbCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelar1ActionPerformed
-                String[] columnNames = {"ID","Clase","Apellido","Nombre","Documento","Fecha Alta","Vencimiento"};
+    private void realizarBusqueda(){
+        String[] columnNames = {"ID","Clase","Apellido","Nombre","Documento","Fecha Alta","Vencimiento"};
                 List<Licencia> listLic;
                 
                 if("".equals(jtbDoc.getText())){
@@ -231,9 +228,26 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
    
                 jTable1.setRowSorter(trsfiltro);
                 } 
+    }
+    
+    private List<Licencia> getLicencias(){
+    Query qt = entityManager.createQuery("select l from Licencia L where l.impresa=false");
+    return qt.getResultList();
                 
+    }
+    
+    private List<Licencia> getLicenciasDNI(){
+    //Query qt = entityManager.createQuery("select l from Licencia as L inner join Titular AS t on ON  where l.impresa=false ");
+    Query qt = entityManager.createQuery("SELECT l FROM Licencia l, Titular t WHERE l.idTitular = t.idTitular and l.impresa=0 and t.nroDocumento=?1");
+          qt.setParameter(1, jtbDoc.getText());
+    return qt.getResultList();
                 
-    }//GEN-LAST:event_jbCancelar1ActionPerformed
+    }
+    
+    private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
+       realizarBusqueda();               
+                
+    }//GEN-LAST:event_jbBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -276,8 +290,8 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbBuscar;
     private javax.swing.JButton jbCancelar;
-    private javax.swing.JButton jbCancelar1;
     private javax.swing.JPanel jpImagen;
     private javax.swing.JTextField jtbDoc;
     private java.util.List<Entidades.Licencia> licenciaList;

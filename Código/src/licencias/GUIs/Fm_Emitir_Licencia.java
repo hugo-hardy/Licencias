@@ -7,8 +7,10 @@ package licencias.GUIs;
 import licencias.Imagen;
 import Entidades.Titular;
 import Entidades.Licencia;
+import Entidades.LicenciaVencida;
 import Entidades.TipoLicencia;
-import java.time.LocalDateTime;
+import com.sun.org.apache.xerces.internal.impl.dv.xs.DecimalDV;
+//import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.EntityTransaction;
@@ -16,10 +18,9 @@ import javax.persistence.Query;
 import javax.swing.JOptionPane;
 import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 import java.text.SimpleDateFormat;
-/**
- *
- * @author HARDY
- */
+import java.util.List;
+import static javax.print.attribute.Size2DSyntax.MM;
+
 public class Fm_Emitir_Licencia extends javax.swing.JFrame {
     private int id_titular = 0;
     /**
@@ -47,6 +48,12 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         titularList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : titularQuery.getResultList();
         licenciaQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM Licencia l");
         licenciaList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaQuery1.getResultList();
+        licenciaQuery2 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM Licencia l");
+        licenciaList2 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaQuery2.getResultList();
+        licenciaQuery3 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM Licencia l");
+        licenciaList3 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaQuery3.getResultList();
+        licenciaVencidaQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM LicenciaVencida l");
+        licenciaVencidaList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaVencidaQuery.getResultList();
         jpImagen = new javax.swing.JPanel();
         jbOk = new javax.swing.JButton();
         jbCancelar = new javax.swing.JButton();
@@ -108,7 +115,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar Titular"));
 
-        jcbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DNI", "CI", "PASAPORTE", "LE" }));
+        jcbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DNI", "LC", "LE", " " }));
 
         jtbNroDoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,7 +250,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         jchbDonante.setText("Es donante");
         jchbDonante.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        jftNacimiento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
+        jftNacimiento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -369,6 +376,41 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         return titu;
     }
     
+    private List<String> licenciasVigentes(int unIdTitular){
+                
+        Query q = entityManager.createQuery("select l.clase from Licencia L where l.idTitular=?1");//and l.vigencia>=2
+        q.setParameter(1, unIdTitular);
+        return q.getResultList();
+    }
+    
+    private boolean esProfecionalValido(int unIdTitular){
+        Date fechaHoy = new Date();
+        fechaHoy.setYear(fechaHoy.getYear()-1);
+        boolean resultado = false;
+                
+        Query q = entityManager.createQuery("select l.fechaAlta from Licencia L where l.idTitular=?1 and l.clase=?2");//and l.vigencia>=2
+        q.setParameter(1, unIdTitular);
+        q.setParameter(2, "Clase B");
+        
+        for (int lic = 0; lic <= q.getResultList().size()-1;lic++)
+        {                    
+           if(((Date)q.getResultList().get(lic)).before(fechaHoy)){
+               resultado = true;
+           }         
+        }
+               
+        Query qv = entityManager.createQuery("select lv.fechaAlta from LicenciaVencida LV where lv.idTitular=?1 and lv.clase=?2");//and l.vigencia>=2
+        qv.setParameter(1, unIdTitular);
+        qv.setParameter(2, "Clase B");
+         
+        for (int licVe = 0; licVe <= qv.getResultList().size()-1;licVe++)
+        {                    
+           if(((Date)qv.getResultList().get(licVe)).before(fechaHoy)){
+               resultado = true;                  
+        }        
+        }
+        return resultado;
+    }
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
         //Buscar Titular y cargar los datos
         Titular t =  buscarTitular(jcbTipo.getSelectedItem().toString(), jtbNroDoc.getText());
@@ -380,7 +422,8 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         else
         {
         id_titular = t.getIdTitular();
-                       
+        List<String> licVig = licenciasVigentes(id_titular);
+        
         jtbApellido.setText(t.getApellido());
         jtbNombre.setText(t.getNombre());
         jtbDireccion.setText(t.getDireccion());
@@ -394,19 +437,60 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         jcbGrupo.setSelectedItem(t.getGrupoSanguineo());
         jchbDonante.setSelected(t.getEsDonante());
         jtbObs.setText(t.getObservacion());
-        jcbA.setSelected(t.getClaseA());
-        jcbB.setSelected(t.getClaseB());
-        jcbC.setSelected(t.getClaseC());
-        jcbD.setSelected(t.getClaseD());
-        jcbE.setSelected(t.getClaseE());
-        jcbF.setSelected(t.getClaseF());
-        jcbG.setSelected(t.getClaseG());
+        if(licVig.contains("Clase A")){
+         jcbA.setSelected(false);
+         jcbA.setEnabled(false);
         }
-        
+        else{
+         jcbA.setSelected(t.getClaseA());
+        }
+        if(licVig.contains("Clase B")){
+         jcbB.setSelected(false);
+         jcbB.setEnabled(false);
+        }
+        else{
+         jcbB.setSelected(t.getClaseB());
+        }
+        if(licVig.contains("Clase C")){
+         jcbC.setSelected(false);
+         jcbC.setEnabled(false);
+        }
+        else{
+         jcbC.setSelected(t.getClaseC());
+        }
+        if(licVig.contains("Clase D")){
+         jcbD.setSelected(false);
+         jcbD.setEnabled(false);
+        }
+        else{
+         jcbD.setSelected(t.getClaseD());
+        }
+        if(licVig.contains("Clase E")){
+         jcbE.setSelected(false);
+         jcbE.setEnabled(false);
+        }
+        else{
+         jcbE.setSelected(t.getClaseE());
+        }
+        if(licVig.contains("Clase F")){
+         jcbF.setSelected(false);
+         jcbF.setEnabled(false);
+        }
+        else{
+         jcbF.setSelected(t.getClaseF());
+        }
+        if(licVig.contains("Clase G")){
+         jcbG.setSelected(false);
+         jcbG.setEnabled(false);
+        }
+        else{
+         jcbG.setSelected(t.getClaseG());
+        }
+        }        
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     
-    private int edad(String fecha_nac) {     //fecha_nac debe tener el formato dd/MM/yyyy
+    private int getEdad(String fecha_nac) {     //fecha_nac debe tener el formato dd/MM/yyyy
    
     Date fechaActual = new Date();
     SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -433,19 +517,47 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
     private void jcbDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jcbDActionPerformed
-
+        
+    private boolean getPrimeraVez(){
+    boolean resultado = false;
+    Query ql = entityManager.createQuery("select l from Licencia L where l.idTitular=?1");
+    ql.setParameter(1, id_titular); 
+         
+    Query qlv = entityManager.createQuery("select lv from LicenciaVencida LV where lv.idTitular=?1");
+    qlv.setParameter(1, id_titular);
+        
+        if((ql.getResultList().isEmpty()) && (qlv.getResultList().isEmpty()))
+        {
+            resultado = true;
+        }
+        return resultado;
+    }
+    
     private void emitirLicenciaConClase(String clase) {                                         
-         try {
-             
-      //int vigencia = TipoLicencia.
+      try {
+      
+      int edad = getEdad(jftNacimiento.getText());
+      boolean primeraVez = getPrimeraVez();
+      Date fechaActual = new Date();
+      
+      int vigencia = TipoLicencia.calcularVigencia(edad, primeraVez);
+      int añoVig = (fechaActual.getYear())+vigencia;
+      
+      String[] fechaNac = jftNacimiento.getText().split("/");
+      
+      Date nac = new Date(Integer.parseInt(fechaNac[2]),Integer.parseInt(fechaNac[1]),Integer.parseInt(fechaNac[0])); //formato.parse(jftNacimiento.getText()); //new Date(jftNacimiento.getText());
+            
+      double monto = TipoLicencia.calcularCosto(clase, vigencia);
+      Date vig = new Date(añoVig,nac.getMonth()-1,nac.getDate());
+      
       // Crea un nueva licencia
       Licencia lic = new Licencia();
       lic.setFechaAlta(new Date());
-      lic.setVigencia(null);
+      lic.setVigencia(vig);
       lic.setFechaBaja(null);
       lic.setIdTitular(id_titular);
       lic.setObservacion(jtbObs.getText());
-      lic.setValor(null);
+      lic.setValor(monto);
       lic.setClase(clase);      
       lic.setImpresa(false);
       
@@ -463,8 +575,8 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
     private void jbOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbOkActionPerformed
         // Emitir Licencia despues de validar
        int countEmitidas = 0;
-       int tituEdad = 0;
-       tituEdad = edad(jftNacimiento.getText());
+       int tituEdad = getEdad(jftNacimiento.getText());
+        
       
        if(jcbA.isSelected())
        {
@@ -472,6 +584,9 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
            if(TipoLicencia.cumpleEdadMinima("Clase A", tituEdad)){
            emitirLicenciaConClase("Clase A");
            countEmitidas++;
+           }
+           else{
+               JOptionPane.showMessageDialog(null, "No cumple edad minima para la Clase A");
            }
        }
        if(jcbB.isSelected())
@@ -481,29 +596,56 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
            emitirLicenciaConClase("Clase B");
            countEmitidas++;
            }
+           else{
+               JOptionPane.showMessageDialog(null, "No cumple edad minima para la Clase B");
+           }
        }
        if(jcbC.isSelected())
        {
            //Validar clase C
+           if((!esProfecionalValido(id_titular))||(tituEdad >= 65 && getPrimeraVez())){
+             JOptionPane.showMessageDialog(null, "No cumple con profecionalismo para Clase C");   
+           }
+           else{
            if(TipoLicencia.cumpleEdadMinima("Clase C", tituEdad)){
            emitirLicenciaConClase("Clase C");
            countEmitidas++;
+           }
+           else{
+               JOptionPane.showMessageDialog(null, "No cumple edad minima para la Clase C");
+           }
            }
        }
        if(jcbD.isSelected())
        {
            //Validar clase D
+           if((!esProfecionalValido(id_titular))||(tituEdad >= 65 && getPrimeraVez())){
+             JOptionPane.showMessageDialog(null, "No cumple con profecionalismo para Clase D");   
+           }
+           else{
            if(TipoLicencia.cumpleEdadMinima("Clase D", tituEdad)){
            emitirLicenciaConClase("Clase D");
            countEmitidas++;
+           }
+           else{
+               JOptionPane.showMessageDialog(null, "No cumple edad minima para la Clase D");
+           }
            }
        }
        if(jcbE.isSelected())
        {
            //Validar clase E
+           if((!esProfecionalValido(id_titular))||(tituEdad >= 65 && getPrimeraVez())){
+             JOptionPane.showMessageDialog(null, "No cumple con profecionalismo para Clase E");   
+           }
+           else{
            if(TipoLicencia.cumpleEdadMinima("Clase E", tituEdad)){
            emitirLicenciaConClase("Clase E");
            countEmitidas++;
+           }
+           else{
+               JOptionPane.showMessageDialog(null, "No cumple edad minima para la Clase E");
+           }
            }
        }
        if(jcbF.isSelected())
@@ -513,6 +655,9 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
            emitirLicenciaConClase("Clase F");
            countEmitidas++;
            }
+           else{
+               JOptionPane.showMessageDialog(null, "No cumple edad minima para la Clase F");
+           }
        }
        if(jcbG.isSelected())
        {
@@ -521,13 +666,16 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
            emitirLicenciaConClase("Clase G");
            countEmitidas++;
            }
+           else{
+               JOptionPane.showMessageDialog(null, "No cumple edad minima para la Clase G");
+           }
        }
        if(countEmitidas > 0)
        {
         JOptionPane.showMessageDialog(null, "Se han Emitido "+ countEmitidas +" Licencias");
         dispose();
        }
-       entityManager.close();
+       //entityManager.close();
         
     }//GEN-LAST:event_jbOkActionPerformed
 
@@ -604,8 +752,14 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
     private javax.swing.JTextField jtbObs;
     private java.util.List<Entidades.Licencia> licenciaList;
     private java.util.List<Entidades.Licencia> licenciaList1;
+    private java.util.List<Entidades.Licencia> licenciaList2;
+    private java.util.List<Entidades.Licencia> licenciaList3;
     private javax.persistence.Query licenciaQuery;
     private javax.persistence.Query licenciaQuery1;
+    private javax.persistence.Query licenciaQuery2;
+    private javax.persistence.Query licenciaQuery3;
+    private java.util.List<Entidades.LicenciaVencida> licenciaVencidaList;
+    private javax.persistence.Query licenciaVencidaQuery;
     private java.util.List<Entidades.Titular> titularList;
     private javax.persistence.Query titularQuery;
     // End of variables declaration//GEN-END:variables

@@ -5,6 +5,8 @@
  */
 package licencias.GUIs;
 
+import Entidades.Impresion;
+import Entidades.ImprimirLicencia;
 import Entidades.Licencia;
 import Entidades.Titular;
 import java.awt.Graphics;
@@ -88,6 +90,8 @@ public class Fm_Imprimir extends javax.swing.JFrame implements Printable {
         titularList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : titularQuery.getResultList();
         impresionQuery = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT i FROM Impresion i");
         impresionList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : impresionQuery.getResultList();
+        impresionQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT i FROM Impresion i");
+        impresionList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : impresionQuery1.getResultList();
         jPanel1 = new javax.swing.JPanel();
         jbImprimir = new javax.swing.JButton();
         jpImprimir = new javax.swing.JPanel();
@@ -125,10 +129,10 @@ public class Fm_Imprimir extends javax.swing.JFrame implements Printable {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(220, 220, 220)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbImprimir)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(259, 259, 259))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,7 +378,7 @@ public class Fm_Imprimir extends javax.swing.JFrame implements Printable {
         EntityTransaction etx = entityManager.getTransaction();
         etx.begin();
         //entityManager.close();
-      etx.commit();
+        etx.commit();
         
     }
       
@@ -399,6 +403,9 @@ public class Fm_Imprimir extends javax.swing.JFrame implements Printable {
             job.printDialog();
             job.print();
             guardarImpresion(un_id_licencia);
+            actualizarLicencia(un_id_licencia);
+            
+            dispose();
 } catch (PrinterException ex) {
   //Logger.getLogger(PrintMe.class.getName()).log(Level.SEVERE, null, ex);
 }
@@ -454,8 +461,10 @@ return PAGE_EXISTS;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.persistence.EntityManager entityManager;
-    private java.util.List<licencias.GUIs.Impresion> impresionList;
+    private java.util.List<Entidades.Impresion> impresionList;
+    private java.util.List<Entidades.Impresion> impresionList1;
     private javax.persistence.Query impresionQuery;
+    private javax.persistence.Query impresionQuery1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

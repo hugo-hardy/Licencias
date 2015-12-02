@@ -17,19 +17,19 @@ import java.util.regex.Pattern;
 public class Validacion {
     
     public static boolean isValidAyN(String texto){
-     Pattern pat = Pattern.compile("[a-zA-Z]{1,50}");
+     Pattern pat = Pattern.compile("[a-zA-Z ]{1,50}");
      Matcher mat = pat.matcher(texto);
      return mat.matches();
     }
     
     public static boolean isValidNroDoc(String doc){
-     Pattern pat = Pattern.compile("([0-9]{1,8})");
+     Pattern pat = Pattern.compile("[0-9]{1,8}");
      Matcher mat = pat.matcher(doc);
      return mat.matches();
     }
     
     public static boolean isValidDom(String dom){
-     Pattern pat = Pattern.compile(" [A-Za-z0-9]{1,50}");
+     Pattern pat = Pattern.compile("[A-Za-z0-9 ]{1,50}");
      Matcher mat = pat.matcher(dom);
      return mat.matches();
     }

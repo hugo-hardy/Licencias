@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import static javax.print.attribute.Size2DSyntax.MM;
 import javax.sql.rowset.CachedRowSet;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.RowFilter;
 import javax.swing.RowFilter.ComparisonType;
@@ -54,6 +56,10 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
         licenciaVencidaList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaVencidaQuery.getResultList();
         licenciaVencidaQuery1 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM LicenciaVencida l");
         licenciaVencidaList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaVencidaQuery1.getResultList();
+        licenciaVencidaQuery2 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM LicenciaVencida l");
+        licenciaVencidaList2 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaVencidaQuery2.getResultList();
+        licenciaVencidaQuery3 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT l FROM LicenciaVencida l");
+        licenciaVencidaList3 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : licenciaVencidaQuery3.getResultList();
         jpImagen = new javax.swing.JPanel();
         jbCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -90,12 +96,12 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
             }
         });
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, licenciaVencidaList1, jTableLic);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${apellidoNombre}"));
-        columnBinding.setColumnName("Apellido Nombre");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nroDocumento}"));
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, licenciaVencidaList3, jTableLic);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nroDocumento}"));
         columnBinding.setColumnName("Nro Documento");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${apellidoNombre}"));
+        columnBinding.setColumnName("Apellido Nombre");
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${clase}"));
         columnBinding.setColumnName("Clase");
@@ -109,6 +115,9 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${observacion}"));
         columnBinding.setColumnName("Observacion");
         columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${valor}"));
+        columnBinding.setColumnName("Valor");
+        columnBinding.setColumnClass(Double.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         jScrollPane1.setViewportView(jTableLic);
@@ -243,40 +252,13 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
     
     private void cargarTabla(){
     DefaultTableModel dtmLic = new DefaultTableModel();
-         
-    //llenar el modelo
-    
-    
+       
     jTableLic.setModel(dtmLic);
            
     }
     
     private void jbCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelar1ActionPerformed
-        // TODO add your handling code here:
-        /*List<Entidades.LicenciaVencida> lic;
-        
-        String query = "select lv from LicenciaVencida LV";
-        if(jtbDoc.getText()!=""){
-        query = query+" WHERE lv.nroDocumento=?1";
-        }*/
-        /*if(jftDesde.getText()!=""){
-        query = query+" and lv.fechaAlta BETWEEN ?2 AND ?3";
-        }*/
-              
-        //Query q = entityManager.createQuery("select lv from LicenciaVencida LV where lv.fechaAlta BETWEEN ?1 and ?2");
-        /*Query q = entityManager.createQuery(query);
-        
-        q.setParameter(1, jtbDoc.getText());
-        //q.setParameter(2, jftDesde.getText());
-        //q.setParameter(2, jftHasta.getText());
-               
-        lic = q.getResultList();
-               
-        licenciaVencidaList1 = lic;
-        licenciaVencidaList = lic;
-        jTableLic.repaint();
-        jTableLic.updateUI();*/
-        
+                
         repaint();
         trsfiltro = new TableRowSorter(jTableLic.getModel());
         
@@ -291,7 +273,7 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
         EntityTransaction etx = entityManager.getTransaction();
         etx.begin();
         entityManager.remove(lic);
-        entityManager.close();
+        //entityManager.close();
       etx.commit();
     }
     
@@ -313,12 +295,16 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
         EntityTransaction etx = entityManager.getTransaction();
         etx.begin();
         entityManager.persist(licVen);
-        entityManager.close();
+        //entityManager.close();
       etx.commit();
     }
     
     private List<Licencia> getLicencias(){
-    Query qt = entityManager.createQuery("select l from Licencia L where l.vigencia<now()");
+      Date hoy = new Date();
+         
+    Query qt = entityManager.createQuery("select l from Licencia L where l.vigencia<?1");
+    qt.setParameter(1, hoy);
+        
     return qt.getResultList();
     }
     
@@ -330,6 +316,8 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
                     insertarLicenciasExp(listLic.get(lic).getIdLicencia());
                     deleteLicencia(listLic.get(lic).getIdLicencia());
                 }
+        
+        JOptionPane.showMessageDialog(null, "Licencias movidas: "+ listLic.size());
     }//GEN-LAST:event_jbCancelar2ActionPerformed
 
     private void jftHastaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jftHastaActionPerformed
@@ -348,6 +336,10 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
    List filters = new ArrayList<RowFilter<Object,Object>>(); 
    String strFechaDesde = jftDesde.getText();
    String strFechaHasta = jftHasta.getText();
+   
+   if(jtbDoc.getText() != ""){
+   filters.add(RowFilter.regexFilter(jtbDoc.getText(), 0));
+   }
    
    if(!"".equals(strFechaDesde)){
    SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd-MM-yyyy");
@@ -369,9 +361,7 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
    filters.add(RowFilter.dateFilter(ComparisonType.EQUAL,fecha_vig_hasta,4));
    
    }   
-   if(jtbDoc.getText() != ""){
-   filters.add(RowFilter.regexFilter(jtbDoc.getText(), 1));
-   }
+   
    if(filters.size()>0){
    trsfiltro.setRowFilter(RowFilter.andFilter(filters));
    } 
@@ -429,8 +419,12 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
     private javax.swing.JTextField jtbDoc;
     private java.util.List<Entidades.LicenciaVencida> licenciaVencidaList;
     private java.util.List<Entidades.LicenciaVencida> licenciaVencidaList1;
+    private java.util.List<Entidades.LicenciaVencida> licenciaVencidaList2;
+    private java.util.List<Entidades.LicenciaVencida> licenciaVencidaList3;
     private javax.persistence.Query licenciaVencidaQuery;
     private javax.persistence.Query licenciaVencidaQuery1;
+    private javax.persistence.Query licenciaVencidaQuery2;
+    private javax.persistence.Query licenciaVencidaQuery3;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }
