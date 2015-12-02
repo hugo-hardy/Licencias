@@ -106,6 +106,8 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Entidades.Titular&gt;"/>
       </AuxValues>
     </Component>
+    <Component class="Entidades.Titular" name="titular1">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>

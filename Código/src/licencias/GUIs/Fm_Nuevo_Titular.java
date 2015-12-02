@@ -6,14 +6,10 @@
 
 package licencias.GUIs;
 import Entidades.Titular;
-import Entidades.Contribuyente;
 import javax.swing.JOptionPane;
 import java.sql.Date;
 import licencias.Imagen;
-import licencias.Validacion;
 import javax.persistence.*;
-import jdk.nashorn.internal.parser.TokenType;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.io.File;
 import java.util.TimeZone;
@@ -64,6 +60,7 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
         contribuyenteList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : contribuyenteQuery.getResultList();
         titularQuery3 = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT t FROM Titular t");
         titularList3 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : titularQuery3.getResultList();
+        titular1 = new Entidades.Titular();
         jLabel1 = new javax.swing.JLabel();
         jbOk = new javax.swing.JButton();
         jbCancelar = new javax.swing.JButton();
@@ -635,6 +632,7 @@ public class Fm_Nuevo_Titular extends javax.swing.JFrame {
     private javax.swing.JTextField jtbNombre;
     private javax.swing.JTextField jtbNroDoc;
     private javax.swing.JTextField jtbObs;
+    private Entidades.Titular titular1;
     private java.util.List<Entidades.Titular> titularList;
     private java.util.List<Entidades.Titular> titularList1;
     private java.util.List<Entidades.Titular> titularList2;
