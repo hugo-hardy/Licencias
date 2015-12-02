@@ -62,5 +62,20 @@ public class CalcularCostoJUnitTest extends TestCase {
         assertEquals((float) 25, TipoLicencia.calcularCosto("Clase D", 3));
         assertEquals((float) 30, TipoLicencia.calcularCosto("Clase D", 4));
         assertEquals((float) 40, TipoLicencia.calcularCosto("Clase D", 5));
+        
+        assertEquals((float) 29, TipoLicencia.calcularCosto("Clase E", 1));
+        assertEquals((float) 39, TipoLicencia.calcularCosto("Clase E", 3));
+        assertEquals((float) 44, TipoLicencia.calcularCosto("Clase E", 4));
+        assertEquals((float) 59, TipoLicencia.calcularCosto("Clase E", 5));
+        
+        assertEquals((float) 20, TipoLicencia.calcularCosto("Clase F", 1));
+        assertEquals((float) 25, TipoLicencia.calcularCosto("Clase F", 3));
+        assertEquals((float) 30, TipoLicencia.calcularCosto("Clase F", 4));
+        assertEquals((float) 40, TipoLicencia.calcularCosto("Clase F", 5));
+        
+        assertEquals((float) 20, TipoLicencia.calcularCosto("Clase G", 1));
+        assertEquals((float) 25, TipoLicencia.calcularCosto("Clase G", 3));
+        assertEquals((float) 30, TipoLicencia.calcularCosto("Clase G", 4));
+        assertEquals((float) 40, TipoLicencia.calcularCosto("Clase G", 5));
     }
 }
