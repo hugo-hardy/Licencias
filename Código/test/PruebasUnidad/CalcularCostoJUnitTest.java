@@ -42,40 +42,42 @@ public class CalcularCostoJUnitTest extends TestCase {
     // @Test
     // public void hello() {}
     public void testCalcularCosto() {
+        double v20 = 20, v25 = 25, v30 = 30, v40 = 40, v23 = 23, v35 = 35, v47 = 47;
+        double v29 = 29, v39 = 39, v44 = 44, v59 = 59;
         
-        assertEquals((float) 20, TipoLicencia.calcularCosto("Clase A", 1));
-        assertEquals((float) 25, TipoLicencia.calcularCosto("Clase A", 3));
-        assertEquals((float) 30, TipoLicencia.calcularCosto("Clase A", 4));
-        assertEquals((float) 40, TipoLicencia.calcularCosto("Clase A", 5));
+        assertEquals(v20, TipoLicencia.calcularCosto("Clase A", 1));
+        assertEquals(v25, TipoLicencia.calcularCosto("Clase A", 3));
+        assertEquals(v30, TipoLicencia.calcularCosto("Clase A", 4));
+        assertEquals(v40, TipoLicencia.calcularCosto("Clase A", 5));
         
-        assertEquals((float) 20, TipoLicencia.calcularCosto("Clase B", 1));
-        assertEquals((float) 25, TipoLicencia.calcularCosto("Clase B", 3));
-        assertEquals((float) 30, TipoLicencia.calcularCosto("Clase B", 4));
-        assertEquals((float) 40, TipoLicencia.calcularCosto("Clase B", 5));
+        assertEquals(v20, TipoLicencia.calcularCosto("Clase B", 1));
+        assertEquals(v25, TipoLicencia.calcularCosto("Clase B", 3));
+        assertEquals(v30, TipoLicencia.calcularCosto("Clase B", 4));
+        assertEquals(v40, TipoLicencia.calcularCosto("Clase B", 5));
         
-        assertEquals((float) 23, TipoLicencia.calcularCosto("Clase C", 1));
-        assertEquals((float) 30, TipoLicencia.calcularCosto("Clase C", 3));
-        assertEquals((float) 35, TipoLicencia.calcularCosto("Clase C", 4));
-        assertEquals((float) 47, TipoLicencia.calcularCosto("Clase C", 5));
+        assertEquals(v23, TipoLicencia.calcularCosto("Clase C", 1));
+        assertEquals(v30, TipoLicencia.calcularCosto("Clase C", 3));
+        assertEquals(v35, TipoLicencia.calcularCosto("Clase C", 4));
+        assertEquals(v47, TipoLicencia.calcularCosto("Clase C", 5));
         
-        assertEquals((float) 20, TipoLicencia.calcularCosto("Clase D", 1));
-        assertEquals((float) 25, TipoLicencia.calcularCosto("Clase D", 3));
-        assertEquals((float) 30, TipoLicencia.calcularCosto("Clase D", 4));
-        assertEquals((float) 40, TipoLicencia.calcularCosto("Clase D", 5));
+        assertEquals(v20, TipoLicencia.calcularCosto("Clase D", 1));
+        assertEquals(v25, TipoLicencia.calcularCosto("Clase D", 3));
+        assertEquals(v30, TipoLicencia.calcularCosto("Clase D", 4));
+        assertEquals(v40, TipoLicencia.calcularCosto("Clase D", 5));
         
-        assertEquals((float) 29, TipoLicencia.calcularCosto("Clase E", 1));
-        assertEquals((float) 39, TipoLicencia.calcularCosto("Clase E", 3));
-        assertEquals((float) 44, TipoLicencia.calcularCosto("Clase E", 4));
-        assertEquals((float) 59, TipoLicencia.calcularCosto("Clase E", 5));
+        assertEquals(v29, TipoLicencia.calcularCosto("Clase E", 1));
+        assertEquals(v39, TipoLicencia.calcularCosto("Clase E", 3));
+        assertEquals(v44, TipoLicencia.calcularCosto("Clase E", 4));
+        assertEquals(v59, TipoLicencia.calcularCosto("Clase E", 5));
         
-        assertEquals((float) 20, TipoLicencia.calcularCosto("Clase F", 1));
-        assertEquals((float) 25, TipoLicencia.calcularCosto("Clase F", 3));
-        assertEquals((float) 30, TipoLicencia.calcularCosto("Clase F", 4));
-        assertEquals((float) 40, TipoLicencia.calcularCosto("Clase F", 5));
+        assertEquals(v20, TipoLicencia.calcularCosto("Clase F", 1));
+        assertEquals(v25, TipoLicencia.calcularCosto("Clase F", 3));
+        assertEquals(v30, TipoLicencia.calcularCosto("Clase F", 4));
+        assertEquals(v40, TipoLicencia.calcularCosto("Clase F", 5));
         
-        assertEquals((float) 20, TipoLicencia.calcularCosto("Clase G", 1));
-        assertEquals((float) 25, TipoLicencia.calcularCosto("Clase G", 3));
-        assertEquals((float) 30, TipoLicencia.calcularCosto("Clase G", 4));
-        assertEquals((float) 40, TipoLicencia.calcularCosto("Clase G", 5));
+        assertEquals(v20, TipoLicencia.calcularCosto("Clase G", 1));
+        assertEquals(v25, TipoLicencia.calcularCosto("Clase G", 3));
+        assertEquals(v30, TipoLicencia.calcularCosto("Clase G", 4));
+        assertEquals(v40, TipoLicencia.calcularCosto("Clase G", 5));
     }
 }
