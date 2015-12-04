@@ -31,14 +31,14 @@ CREATE TABLE `licencia_vencida` (
   `vigencia` datetime DEFAULT NULL,
   `fecha_baja` datetime DEFAULT NULL,
   `observacion` varchar(45) DEFAULT NULL,
-  `valor` decimal(10,0) DEFAULT NULL,
+  `valor` double DEFAULT NULL,
   `id_titular` int(11) DEFAULT NULL,
   `apellido_Nombre` varchar(100) DEFAULT NULL,
   `nro_documento` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id_licencia_vencida`),
   KEY `idTitular_idx` (`id_titular`),
   CONSTRAINT `fk_id_titular_lv` FOREIGN KEY (`id_titular`) REFERENCES `titular` (`id_titular`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `licencia_vencida` (
 
 LOCK TABLES `licencia_vencida` WRITE;
 /*!40000 ALTER TABLE `licencia_vencida` DISABLE KEYS */;
-INSERT INTO `licencia_vencida` VALUES (2,'2010-11-15 00:00:00','Clase A','2013-11-15 00:00:00','2013-11-15 00:00:00','Usa lentes',10,2,'Hardy Hugo',NULL),(3,'2010-11-01 00:00:00','Clase B','2013-11-01 00:00:00','2013-11-01 00:00:00','No usa',10,2,'Domato','123'),(4,'2010-11-02 00:00:00','Clase C','2013-11-02 00:00:00','2013-11-02 00:00:00','Maneja',20,2,'Hardy','321');
+INSERT INTO `licencia_vencida` VALUES (5,'2015-11-29 11:11:48','Clase A','1902-06-28 00:00:00',NULL,'No usa lentes',40,19,'Hardy Hugo','30175437'),(6,'2015-11-29 11:11:48','Clase A','1902-06-28 00:00:00',NULL,'No usa lentes',40,19,'Hardy Hugo','30175437'),(7,'2015-11-29 11:11:48','Clase A','1902-06-28 00:00:00',NULL,'No usa lentes',40,19,'Hardy Hugo','30175437'),(8,'2015-11-29 11:11:48','Clase A','1902-06-28 00:00:00',NULL,'No usa lentes',40,19,'Hardy Hugo','30175437'),(9,'2015-11-29 11:11:48','Clase B','1902-06-28 00:00:00',NULL,'No usa lentes',40,19,'Hardy Hugo','30175437'),(10,'2015-11-29 11:11:48','Clase B','1902-06-28 00:00:00',NULL,'No usa lentes',40,19,'Hardy Hugo','30175437'),(11,'2015-11-29 11:11:48','Clase B','1902-06-28 00:00:00',NULL,'No usa lentes',40,19,'Hardy Hugo','30175437'),(12,'2015-11-29 15:08:07','Clase A','1907-09-10 00:00:00',NULL,'No usa lentes',40,19,'Hardy Hugo','30175437'),(13,'2015-11-29 15:08:07','Clase B','1907-09-10 00:00:00',NULL,'No usa lentes',40,19,'Hardy Hugo','30175437');
 /*!40000 ALTER TABLE `licencia_vencida` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-27 11:41:49
+-- Dump completed on 2015-12-03 21:37:17

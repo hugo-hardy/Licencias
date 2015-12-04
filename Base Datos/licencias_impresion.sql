@@ -29,10 +29,8 @@ CREATE TABLE `impresion` (
   `fecha` datetime DEFAULT NULL,
   `id_licencia` int(11) DEFAULT NULL,
   `nro_copia` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_impresion`),
-  KEY `fk_id_licencia_idx` (`id_licencia`),
-  CONSTRAINT `fk_id_licencia` FOREIGN KEY (`id_licencia`) REFERENCES `licencia` (`id_licencia`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id_impresion`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,6 +39,7 @@ CREATE TABLE `impresion` (
 
 LOCK TABLES `impresion` WRITE;
 /*!40000 ALTER TABLE `impresion` DISABLE KEYS */;
+INSERT INTO `impresion` VALUES (7,'2015-11-29 12:36:09',7,1),(8,'2015-11-30 06:24:40',12,1),(9,'2015-12-01 18:01:02',10,1),(10,'2015-12-01 18:01:15',11,1),(11,'2015-12-01 18:42:16',13,1);
 /*!40000 ALTER TABLE `impresion` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -52,12 +51,12 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_impresion_i 
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER trg_impresion_in 
 AFTER INSERT ON impresion FOR EACH ROW 
 BEGIN 
 INSERT INTO log_impresion 
 (fecha,id_usuario,id_impresion) 
-VALUES (getdate(),1,new.id_impresion);
+VALUES (now(),1,new.id_impresion);
 
 END */;;
 DELIMITER ;
@@ -75,4 +74,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-27 11:41:49
+-- Dump completed on 2015-12-03 21:37:17

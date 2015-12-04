@@ -29,10 +29,8 @@ CREATE TABLE `log_licencia` (
   `fecha` datetime DEFAULT NULL,
   `id_licencia` int(11) DEFAULT NULL,
   `id_usuario` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_log_licencia`),
-  KEY `fk_id_licencia_ll_idx` (`id_licencia`),
-  CONSTRAINT `fk_id_licencia_ll` FOREIGN KEY (`id_licencia`) REFERENCES `licencia` (`id_licencia`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id_log_licencia`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +39,7 @@ CREATE TABLE `log_licencia` (
 
 LOCK TABLES `log_licencia` WRITE;
 /*!40000 ALTER TABLE `log_licencia` DISABLE KEYS */;
-INSERT INTO `log_licencia` VALUES (1,'2015-11-19 14:44:53',5,1);
+INSERT INTO `log_licencia` VALUES (2,'2015-11-29 11:11:48',6,1),(3,'2015-11-29 11:11:48',7,1),(4,'2015-11-29 15:08:07',8,1),(5,'2015-11-29 15:08:07',9,1),(6,'2015-11-29 15:59:54',10,1),(7,'2015-11-29 15:59:54',11,1),(8,'2015-11-30 06:24:07',12,1),(9,'2015-12-01 17:56:57',13,1),(10,'2015-12-01 17:56:57',14,1);
 /*!40000 ALTER TABLE `log_licencia` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-27 11:41:49
+-- Dump completed on 2015-12-03 21:37:17

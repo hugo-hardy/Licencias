@@ -32,7 +32,7 @@ CREATE TABLE `log_titular` (
   PRIMARY KEY (`id_log_titular`),
   KEY `fk_id_titular_lt_idx` (`id_titular`),
   CONSTRAINT `fk_id_titular_lt` FOREIGN KEY (`id_titular`) REFERENCES `titular` (`id_titular`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `log_titular` (
 
 LOCK TABLES `log_titular` WRITE;
 /*!40000 ALTER TABLE `log_titular` DISABLE KEYS */;
-INSERT INTO `log_titular` VALUES (1,'2015-11-15 08:13:55',1,9),(2,'2015-11-15 08:30:58',1,10),(3,'2015-11-15 08:32:17',1,11),(4,'2015-11-15 08:34:41',1,12),(5,'2015-11-15 09:48:24',1,13),(6,'2015-11-15 09:56:49',1,14),(7,'2015-11-15 09:58:16',1,15),(8,'2015-11-15 10:04:23',1,16),(9,'2015-11-15 10:05:00',1,17),(10,'2015-11-15 10:44:32',1,18);
+INSERT INTO `log_titular` VALUES (11,'2015-11-29 11:11:25',1,19),(12,'2015-12-01 17:27:14',1,20);
 /*!40000 ALTER TABLE `log_titular` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-27 11:41:50
+-- Dump completed on 2015-12-03 21:37:18

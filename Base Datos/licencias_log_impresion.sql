@@ -32,7 +32,7 @@ CREATE TABLE `log_impresion` (
   PRIMARY KEY (`id_log_impresion`),
   KEY `fk_id_impresion_idx` (`id_impresion`),
   CONSTRAINT `fk_id_impresion` FOREIGN KEY (`id_impresion`) REFERENCES `impresion` (`id_impresion`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,6 +41,7 @@ CREATE TABLE `log_impresion` (
 
 LOCK TABLES `log_impresion` WRITE;
 /*!40000 ALTER TABLE `log_impresion` DISABLE KEYS */;
+INSERT INTO `log_impresion` VALUES (1,'2015-11-29 12:36:09',1,7),(2,'2015-11-30 06:24:40',1,8),(3,'2015-12-01 18:01:02',1,9),(4,'2015-12-01 18:01:15',1,10),(5,'2015-12-01 18:42:16',1,11);
 /*!40000 ALTER TABLE `log_impresion` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-27 11:41:49
+-- Dump completed on 2015-12-03 21:37:18

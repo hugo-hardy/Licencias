@@ -47,7 +47,7 @@ CREATE TABLE `titular` (
   `clase_f` tinyint(1) DEFAULT NULL,
   `clase_g` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id_titular`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,7 +56,7 @@ CREATE TABLE `titular` (
 
 LOCK TABLES `titular` WRITE;
 /*!40000 ALTER TABLE `titular` DISABLE KEYS */;
-INSERT INTO `titular` VALUES (2,'Hardy','Hugo','DNI','30175434','1','Parana',1,NULL,NULL,'0','Lentes',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'Domato','Tania','DNI','31398030','1','321',1,'RH -',NULL,'0','lkj',1,NULL,1,0,0,0,0,0,0),(4,'Hardy','Hugo','DNI','30175437','','j bach',1,'RH -',NULL,'0','Lentes',1,'C:\\hugo2.png',1,1,0,0,0,0,0),(5,'Hardy','Alexis','DNI','31398038','','Buenos Aires',1,'RH +',NULL,'A','123',1,'',0,0,0,1,0,0,0),(9,'hardy','ale','DNI','123','','',0,'RH +',NULL,'0','',1,'',1,1,0,0,0,0,0),(10,'domato ','ta','DNI','321','','',0,'RH +','3886-07-27 00:00:00','0','',1,'',1,0,0,1,0,0,0),(11,'pipo','gorosito','DNI','654','','',1,'RH +','3909-11-15 00:00:00','0','',1,'',0,1,0,0,0,0,0),(12,'hardy','hugo','DNI','456','','',0,'RH -','3884-02-15 00:00:00','0','',1,'',0,0,0,1,0,0,0),(13,'yiyo','hector','DNI','987','','',0,'RH +','3911-11-01 00:00:00','0','',1,'',0,0,0,0,0,0,1),(14,'prueba','prueba','DNI','147','','',0,'RH +','3910-09-08 00:00:00','0','',1,'',0,0,0,1,0,0,0),(15,'uno','uno','DNI','369','','',0,'RH +','2009-06-09 00:00:00','0','',1,'',1,0,0,0,0,0,0),(16,'Dos','Dos','DNI','123','','',0,'RH +','2015-11-02 00:00:00','0','',1,'',1,0,0,0,0,0,0),(17,'Tres','Tres','DNI','123','','',0,'RH +','2015-11-15 00:00:00','0','',1,'',0,0,0,0,1,0,0),(18,'Hardy','Alexis','CI','321','','',0,'RH +','1985-10-03 00:00:00','0','',1,'C:\\Users\\HARDY\\Pictures\\fotis\\vieji.jpg',1,0,0,0,0,0,0);
+INSERT INTO `titular` VALUES (19,'Hardy','Hugo','DNI','30175437','','J S Bach 219',1,'RH -','1984-02-15 00:00:00','0','No usa lentes',1,'C:\\Users\\HARDY\\Desktop\\Facu\\Tp Métodos Agiles 2015\\Licencias\\Imágenes\\add_titular.png',1,1,0,0,0,0,0),(20,'Rossier','Maxi','DNI','123456','','Paraguay 331',0,'RH -','2015-12-01 00:00:00','0','',1,'',0,0,0,1,1,0,0);
 /*!40000 ALTER TABLE `titular` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -91,4 +91,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-27 11:41:49
+-- Dump completed on 2015-12-03 21:37:17

@@ -31,13 +31,13 @@ CREATE TABLE `licencia` (
   `vigencia` datetime DEFAULT NULL,
   `fecha_baja` datetime DEFAULT NULL,
   `observacion` varchar(45) DEFAULT NULL,
-  `valor` decimal(10,0) DEFAULT NULL,
+  `valor` double DEFAULT NULL,
   `id_titular` int(11) DEFAULT NULL,
   `impresa` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id_licencia`),
   KEY `fk_id_titular_idx` (`id_titular`),
   CONSTRAINT `fk_id_titular` FOREIGN KEY (`id_titular`) REFERENCES `titular` (`id_titular`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `licencia` (
 
 LOCK TABLES `licencia` WRITE;
 /*!40000 ALTER TABLE `licencia` DISABLE KEYS */;
-INSERT INTO `licencia` VALUES (3,'2010-01-01 00:00:00','Clase A','2013-01-01 00:00:00',NULL,'Lentes',NULL,4,0),(4,'2010-01-02 00:00:00','Clase B','2013-01-02 00:00:00',NULL,'Lentes',NULL,4,0),(5,'2010-01-03 00:00:00','Clase C','2013-01-03 00:00:00',NULL,'No',NULL,3,0);
+INSERT INTO `licencia` VALUES (10,'2015-11-29 15:59:54','Clase A','3920-03-15 00:00:00',NULL,'No usa lentes',40,19,1),(11,'2015-11-29 15:59:54','Clase B','3920-03-15 00:00:00',NULL,'No usa lentes',40,19,1),(12,'2015-11-30 06:24:07','Clase G','2020-02-15 00:00:00',NULL,'No usa lentes',40,19,1),(13,'2015-12-01 17:56:57','Clase D','2019-12-01 00:00:00',NULL,'',40,20,1),(14,'2015-12-01 17:56:57','Clase E','2019-12-01 00:00:00',NULL,'',59,20,0);
 /*!40000 ALTER TABLE `licencia` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -81,4 +81,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-27 11:41:50
+-- Dump completed on 2015-12-03 21:37:18
