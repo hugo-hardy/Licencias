@@ -9,10 +9,7 @@ package licencias;
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-/**
- *
- * @author HARDY
- */
+
 public class Imagen extends javax.swing.JPanel {
     int x, y; String name;
 

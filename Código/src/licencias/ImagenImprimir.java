@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 
 package licencias;
 import java.awt.Graphics;
@@ -11,10 +5,7 @@ import javafx.scene.layout.Border;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-/**
- *
- * @author HARDY
- */
+
 public class ImagenImprimir extends javax.swing.JPanel {
     int x, y; String name;
 

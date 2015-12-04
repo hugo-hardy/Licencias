@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package licencias.GUIs;
 import licencias.Imagen;
 import Entidades.Titular;
@@ -10,7 +6,6 @@ import Entidades.Licencia;
 import Entidades.LicenciaVencida;
 import Entidades.TipoLicencia;
 import com.sun.org.apache.xerces.internal.impl.dv.xs.DecimalDV;
-//import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.EntityTransaction;
@@ -363,6 +358,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jbCancelarActionPerformed
 
+    //Buscar titular con numero y tipo de documento
     private Titular buscarTitular(String tipoDoc, String nroDoc) {                                           
         Titular titu = new Titular();
         
@@ -376,6 +372,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         return titu;
     }
     
+    //Buscar licencias vigentes de un titular
     private List<String> licenciasVigentes(int unIdTitular){
                 
         Query q = entityManager.createQuery("select l.clase from Licencia L where l.idTitular=?1");//and l.vigencia>=2
@@ -383,6 +380,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         return q.getResultList();
     }
     
+    //Validar si es valida la obtención de licencias profesionales
     private boolean esProfecionalValido(int unIdTitular){
         Date fechaHoy = new Date();
         fechaHoy.setYear(fechaHoy.getYear()-1);
@@ -411,6 +409,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         }
         return resultado;
     }
+    
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
         //Buscar Titular y cargar los datos
         Titular t =  buscarTitular(jcbTipo.getSelectedItem().toString(), jtbNroDoc.getText());
@@ -489,8 +488,8 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         }        
     }//GEN-LAST:event_jbBuscarActionPerformed
 
-    
-    private int getEdad(String fecha_nac) {     //fecha_nac debe tener el formato dd/MM/yyyy
+    //Calcular edad del titular
+    private int getEdad(String fecha_nac) { 
    
     Date fechaActual = new Date();
     SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -518,6 +517,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jcbDActionPerformed
         
+    //Vlidar si es la primera licecia del titular
     private boolean getPrimeraVez(){
     boolean resultado = false;
     Query ql = entityManager.createQuery("select l from Licencia L where l.idTitular=?1");
@@ -533,6 +533,7 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
         return resultado;
     }
     
+    //Emite la licencia con una clase
     private void emitirLicenciaConClase(String clase) {                                         
       try {
       
@@ -564,7 +565,6 @@ public class Fm_Emitir_Licencia extends javax.swing.JFrame {
       EntityTransaction etx = entityManager.getTransaction();
       etx.begin();
         entityManager.persist(lic);
-        //entityManager.close();
       etx.commit();
                 
         } catch (Exception e) {

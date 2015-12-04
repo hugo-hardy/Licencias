@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package licencias.GUIs;
 
 import Entidades.Impresion;
@@ -26,10 +22,6 @@ import javax.persistence.Query;
 import licencias.Imagen;
 import licencias.ImagenImprimir;
 
-/**
- *
- * @author HARDY
- */
 public class Fm_Imprimir extends javax.swing.JFrame implements Printable {
 
     /**
@@ -346,6 +338,7 @@ public class Fm_Imprimir extends javax.swing.JFrame implements Printable {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    //Obtener datos de la licencia
     private Licencia getLicencia(int id_licencia){
         
     Licencia lic = new Licencia();
@@ -359,6 +352,7 @@ public class Fm_Imprimir extends javax.swing.JFrame implements Printable {
         return lic;
     }
     
+    //Obtener datos del titular
     private Titular getTitular(int id_titular){
         Titular titu = new Titular();
         
@@ -371,6 +365,7 @@ public class Fm_Imprimir extends javax.swing.JFrame implements Printable {
         return titu;
     }
     
+    //Colocar el true el bit de licencia impresa
       private void actualizarLicencia(int id_licencia){
         Licencia lic = entityManager.find(Licencia.class,id_licencia);
         lic.setImpresa(true);
@@ -382,6 +377,7 @@ public class Fm_Imprimir extends javax.swing.JFrame implements Printable {
         
     }
       
+      //Guardar impresión y log
     private void guardarImpresion(int id_licencia){
         Impresion imp = new Impresion();
         imp.setFecha(new Date());
@@ -391,7 +387,7 @@ public class Fm_Imprimir extends javax.swing.JFrame implements Printable {
         EntityTransaction etx = entityManager.getTransaction();
         etx.begin();
         entityManager.persist(imp);
-        //entityManager.close();
+        
       etx.commit();
         
     }
@@ -407,7 +403,7 @@ public class Fm_Imprimir extends javax.swing.JFrame implements Printable {
             
             dispose();
 } catch (PrinterException ex) {
-  //Logger.getLogger(PrintMe.class.getName()).log(Level.SEVERE, null, ex);
+  
 }
     }//GEN-LAST:event_jbImprimirActionPerformed
 

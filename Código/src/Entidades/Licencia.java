@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Entidades;
 
 import java.beans.PropertyChangeListener;
@@ -22,10 +18,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-/**
- *
- * @author HARDY
- */
 @Entity
 @Table(name = "licencia", catalog = "licencias", schema = "")
 @NamedQueries({

@@ -7,10 +7,7 @@ package licencias;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-/**
- *
- * @author HARDY
- */
+
 public class DB_Conexion {
     Connection conectar = null;
     

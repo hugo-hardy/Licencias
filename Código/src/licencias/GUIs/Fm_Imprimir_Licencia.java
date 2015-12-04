@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package licencias.GUIs;
 import Entidades.ImprimirLicencia;
 import licencias.Imagen;
@@ -20,10 +16,7 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import jdk.nashorn.internal.objects.NativeArray;
-/**
- *
- * @author HARDY
- */
+
 public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
 
     /**
@@ -161,22 +154,29 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
+       
+        if(jTable1.getModel().getRowCount() == 0){
+              JOptionPane.showMessageDialog(null, "Realice la busqueda de licencia"); 
+        }
+        else{
+            
+        
         String dato=String.valueOf(jTable1.getModel().getValueAt(jTable1.getSelectedRow(),0));
         int id_lic = Integer.parseInt(dato);
         
         if(id_lic != -1){
         Fm_Imprimir fm_imprimir = new Fm_Imprimir(id_lic);
         fm_imprimir.setLocationRelativeTo(null);
-        //fm_imprimir.setVisible(true);
-        fm_imprimir.show();
-        realizarBusqueda();
+        fm_imprimir.setVisible(true);
         
         }    
         else{
             JOptionPane.showMessageDialog(null, "Seleccione una Licencia para imprimir");
             }
+        }
     }//GEN-LAST:event_jbCancelarActionPerformed
 
+    //Obtener lista de titulares
     private List<Titular> getTitulares(){
     Query qt = entityManager.createQuery("select t from Titular T");
     return qt.getResultList();                
@@ -230,12 +230,14 @@ public class Fm_Imprimir_Licencia extends javax.swing.JFrame {
                 } 
     }
     
+    //Obtener licencias
     private List<Licencia> getLicencias(){
     Query qt = entityManager.createQuery("select l from Licencia L where l.impresa=false");
     return qt.getResultList();
                 
     }
     
+    //Obtener licencias con un documento
     private List<Licencia> getLicenciasDNI(){
     //Query qt = entityManager.createQuery("select l from Licencia as L inner join Titular AS t on ON  where l.impresa=false ");
     Query qt = entityManager.createQuery("SELECT l FROM Licencia l, Titular t WHERE l.idTitular = t.idTitular and l.impresa=0 and t.nroDocumento=?1");

@@ -1,35 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package licencias.GUIs;
 import Entidades.Licencia;
 import Entidades.LicenciaVencida;
 import Entidades.Titular;
-import java.sql.ResultSet;
+//import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+//import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
+//import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import static javax.print.attribute.Size2DSyntax.MM;
-import javax.sql.rowset.CachedRowSet;
+//import static javax.print.attribute.Size2DSyntax.MM;
+//import javax.sql.rowset.CachedRowSet;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
+//import javax.swing.JScrollPane;
 import javax.swing.RowFilter;
 import javax.swing.RowFilter.ComparisonType;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import licencias.Imagen;
-/**
- *
- * @author HARDY
- */
+
 public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
     private TableRowSorter trsfiltro;
     /**
@@ -277,6 +270,7 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
       etx.commit();
     }
     
+    //Insertar licencia expirada
     private void insertarLicenciasExp(int id_licencia){
     Licencia lic = entityManager.find(Licencia.class, id_licencia);
     Titular tit = entityManager.find(Titular.class, lic.getIdTitular());
@@ -331,6 +325,7 @@ public class Fm_Licencias_Expiradas extends javax.swing.JFrame {
        jftHasta.setValue(null);
     }//GEN-LAST:event_jbCancelar3ActionPerformed
       
+    //Construir el filtro de busqueda
    public void filtro() {
       
    List filters = new ArrayList<RowFilter<Object,Object>>(); 

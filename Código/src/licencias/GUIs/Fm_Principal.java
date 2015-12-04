@@ -1,14 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package licencias.GUIs;
 
-/**
- *
- * @author HARDY
- */
 public class Fm_Principal extends javax.swing.JFrame {
 
     /**
@@ -144,6 +136,11 @@ public class Fm_Principal extends javax.swing.JFrame {
         jmTitulares.setText("Titulares");
 
         jMenuItem3.setText("Nuevo Titular");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jmTitulares.add(jMenuItem3);
 
         jMenuItem4.setText("Buscar Titular");
@@ -171,6 +168,11 @@ public class Fm_Principal extends javax.swing.JFrame {
         jmLicencias.add(jMenuItem5);
 
         jMenuItem6.setText("Licencias Expiradas");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         jmLicencias.add(jMenuItem6);
 
         jMenuItem7.setText("Licencias Vigentes");
@@ -247,15 +249,13 @@ public class Fm_Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbNuevoTitularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoTitularActionPerformed
-        // TODO add your handling code here:
         Fm_Nuevo_Titular fm_nuevo_titular = new Fm_Nuevo_Titular();
         fm_nuevo_titular.setLocationRelativeTo(null);
         fm_nuevo_titular.setVisible(true);
-        //this.setVisible(true);
+      
     }//GEN-LAST:event_jbNuevoTitularActionPerformed
 
     private void jbEmitirLicenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEmitirLicenciaActionPerformed
-        // TODO add your handling code here:
         Fm_Emitir_Licencia fm_emitir_licencia = new Fm_Emitir_Licencia();
         fm_emitir_licencia.setLocationRelativeTo(null);
         fm_emitir_licencia.setVisible(true);
@@ -278,7 +278,9 @@ public class Fm_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        // TODO add your handling code here:
+        Fm_Emitir_Licencia fm_emitir_licencia = new Fm_Emitir_Licencia();
+        fm_emitir_licencia.setLocationRelativeTo(null);
+        fm_emitir_licencia.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
@@ -287,13 +289,27 @@ public class Fm_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        // Llamar Imprimir Licencia
+        Fm_Imprimir_Licencia fm_imprimir_licencia = new Fm_Imprimir_Licencia();
+        fm_imprimir_licencia.setLocationRelativeTo(null);
+        fm_imprimir_licencia.setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
         // Cerrar sistema
         System.exit(0);        
     }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        Fm_Nuevo_Titular fm_nuevo_titular = new Fm_Nuevo_Titular();
+        fm_nuevo_titular.setLocationRelativeTo(null);
+        fm_nuevo_titular.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        Fm_Licencias_Expiradas fm_licencias_expiradas = new Fm_Licencias_Expiradas();
+        fm_licencias_expiradas.setLocationRelativeTo(null);
+        fm_licencias_expiradas.setVisible(true);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
      * @param args the command line arguments
